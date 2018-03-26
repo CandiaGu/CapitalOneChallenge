@@ -62,7 +62,7 @@ a:visited{
 	transform: rotate(-90deg);
 }
 .jumbotron{
-	background: url(../images/SFFDBannerBW.jpg) no-repeat 100%;
+	background: url(images/SFFDBannerBW.jpg) no-repeat 100%;
 	background-size: 100%;
 	background-attachment:fixed;
 	margin-bottom: 0;
