@@ -1,7 +1,69 @@
 
-//// All the metric code for part 1
+//// All the metric code for part 1 and part 3
 
-// First Metric Map
+
+
+///////////////Calculating the data for the metrics below
+
+var callTime = {'Non Life-threatening':0, 'Potentially Life-Threatening':1 , 'Alarm':2 , 'Fire':3 }
+var callTimeAvg = [0,0,0,0]
+var dates = [];
+var zipCodes = [];
+var zipCodesMap = {};
+for(var i = 13; i < 25; i++){
+  dates.push("1-"+i+"-18");
+}
+var dateNumCalls = [0,0,0,0,0,0,0,0,0,0,0]
+//calculate times + find average for each call type
+for (var i = 0; i < data.length; i++) {
+
+    var date = data[i].received_timestamp;
+    date = date.substring(0,date.lastIndexOf(":")+3);
+    data[i].received_timestamp = date;
+
+    var start = moment(date);
+    data[i].start = start;
+
+    dateNumCalls[start.date()-13] += 1;
+
+
+    var date2 = data[i].on_scene_timestamp;
+    date2 = date2.substring(0,date2.lastIndexOf(":")+3);
+    data[i].received_timestamp = date2;
+
+    var end = moment(date2);
+    data[i].end = end;
+
+    
+    var timeDiff = moment.duration(end.diff(start)).asMinutes();
+    
+    data[i]["timeDiff"] = timeDiff;
+
+
+    var group = callTime[data[i].call_type_group];
+    callTimeAvg[group] += 1;
+
+if(!(data[i].zipcode_of_incident in zipCodesMap)){
+    zipCodes.push(data[i].zipcode_of_incident);
+  }
+    zipCodesMap[data[i].zipcode_of_incident] = timeDiff;
+}
+
+//gets the value of the keys given the map and the order of the list
+
+function getValue(map, list) {
+  var res = [];
+  for(var i = 0; i < list.length; i++){
+    res.push(map[list[i]]);
+  }
+
+  return res;
+}
+
+
+
+
+////////////////// First Metric Map
  var map;
   function initMap() {
     map = new google.maps.Map(document.getElementById('map'), {
@@ -26,62 +88,6 @@
   };
       
 
-//Calculating the data for the metrics below
-
-var callTime = {'Non Life-threatening':0, 'Potentially Life-Threatening':1 , 'Alarm':2 , 'Fire':3 }
-var callTimeAvg = [0,0,0,0]
-var dates = [];
-var zipCodes = [];
-var zipCodesMap = {};
-for(var i = 13; i < 25; i++){
-  dates.push("1-"+i+"-18");
-}
-var dateNumCalls = [0,0,0,0,0,0,0,0,0,0,0]
-//calculate times + find average for each call type
-for (var i = 0; i < data.length; i++) {
-
-    var date = data[i].received_timestamp;
-    date = date.substring(0,date.lastIndexOf(":")+3);
-    data[i].received_timestamp = date;
-    //alert(date);
-    var start = moment(date);
-    data[i].start = start;
-
-    dateNumCalls[start.date()-13] += 1;
-
-
-    var date2 = data[i].on_scene_timestamp;
-    date2 = date2.substring(0,date2.lastIndexOf(":")+3);
-    data[i].received_timestamp = date2;
-
-    var end = moment(date2);
-    data[i].end = end;
-
-    
-      var timeDiff = moment.duration(end.diff(start)).asMinutes();
-    
-    data[i]["timeDiff"] = timeDiff;
-    //alert(timeDiff);
-
-
-    var group = callTime[data[i].call_type_group];
-    callTimeAvg[group] += 1;
-
-if(!(data[i].zipcode_of_incident in zipCodesMap)){
-    zipCodes.push(data[i].zipcode_of_incident);
-  }
-    zipCodesMap[data[i].zipcode_of_incident] = timeDiff;
-}
-
-/* Declare the function 'myFunc' */
-function getValue(map, list) {
-  var res = [];
-  for(var i = 0; i < list.length; i++){
-    res.push(map[list[i]]);
-  }
-
-  return res;
-}
 
 
 //Second Metric Doughnut/some circular thing
@@ -111,10 +117,9 @@ new Chart(document.getElementById("radar-chart"), {
     }
 });
 
+
 //Third Metric Time Series
 //num of calls per day
-
-
 
 
 var ctx = document.getElementById('chartCanvas').getContext('2d');
@@ -162,6 +167,7 @@ var options = {
 }
 const newchart = new Chart(ctx, options);
 
+//Chart for part 2
 //Which areas take the longest time to dispatch to on average
 
 var ctx = document.getElementById('myChart2').getContext('2d');

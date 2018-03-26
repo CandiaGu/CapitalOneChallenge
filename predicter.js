@@ -1,4 +1,4 @@
-
+    //Predicts and updates the html file to show results
     function predict()
     {
         var time = document.getElementById('time').value;
@@ -19,6 +19,8 @@
         }
     }
 
+
+    //Finds the predicted valud
     function findValue(longitude, latitude, time){
         //find all matching items
         var rangeOfError = 10;

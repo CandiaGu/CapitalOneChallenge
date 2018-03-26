@@ -1,3 +1,5 @@
+/* For the scrolling effect when button clicked */
+
 $(document).ready(function() {
 
 
