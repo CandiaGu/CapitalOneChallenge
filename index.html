@@ -27,12 +27,6 @@
 	<script type="text/javascript" src="script.js"></script>
 	<script type="text/javascript" src="predicter.js"></script>
 
-
-
-
-
-	
-
 	
 </head>
 <body>
@@ -59,7 +53,7 @@
 	<div class = "row" style = "padding:3vh; position:sticky;position:-webkit-sticky; top: 0; background-color:white; z-index: 2;">
 		<div class = "col-sm-2"></div>
 		<div class = "col-sm-4" id="visButton"><a href = "#visualizations">metrics + trends</a></div>
-		<div class = "col-sm-4 underline"><a href = "#predictor">dispatch prediction</a></div>
+		<div class = "col-sm-4 underline" id="disButton"><a href = "#predictor">dispatch prediction</a></div>
 		<div class = "col-sm-2"></div>
 	</div>
 
@@ -106,10 +100,10 @@
 	<div class="container-fluid bg-3 text-center" id="predictor" style="margin-left:50vh;margin-right:50vh;border-top: solid thin black;padding-top: 20vh;">    
 	    <div class="col-sm-12" >
 	      <h3 class="margin">Dispatch Predictor</h3><br>
-	      <p>Enter the latitude and longitude of a property to estimate the dispatch unit. 
-	        (Note: please give valid coordinates for a property in San Francisco for valid results.)</p>
+	      <p>Enter the latitude and longitude of an incident to predict the dispatch unit. 
+	        (Note: please give valid coordinates for a location in San Francisco for valid results.)</p>
 	      <div class="form-group text-center">
-	      	<label for="usr">Enter time:</label>
+	      	<label for="usr">Enter time (HH:MM a) (ex 12:45 pm) :</label>
 	        <input type="text" class="form-control" id="time" style = "width:100%;">
 	        <label for="usr">Enter latitude:</label>
 	        <input type="text" class="form-control" id="lat" style = "width:100%;">
@@ -124,11 +118,9 @@
 
 	<div class="container-fluid bg-1 text-center">
 		<div class = "row" style = "margin:20vh">
-			<div class = "col-sm-2">
-				<h1>Map of Dispatches</h1>
-				<h3></h3>
-			</div>
-			<div class = "col-sm-10"><canvas id="myChart2"></canvas></div>
+				<h2>Time it takes to dispatch vs area</h2>
+			
+			<div class = "col-sm-12"><canvas id="myChart2"></canvas></div>
 		</div>
 	</div>
 
@@ -165,6 +157,7 @@
 
 	<script type="text/javascript" src="data.js"></script>
 	<script type="text/javascript" src="metrics.js"></script>
+	<script type="text/javascript" src="predicter.js"></script>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGEBVPLC5x39vJPHIbgW4lnKOrsy_G35M&callback=initMap"
     			async defer></script>
 </body>

@@ -3,35 +3,36 @@
 
 // First Metric Map
  var map;
-      function initMap() {
-          map = new google.maps.Map(document.getElementById('map'), {
-          center:new google.maps.LatLng(37.773972, -122.431297),
-                // latitude/longitude of San Francisco 
-                zoom:12,
-        });
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+    center:new google.maps.LatLng(37.773972, -122.431297),
+          // latitude/longitude of San Francisco 
+          zoom:12,
+  });
 
+
+
+  // Loop through the results array and place a marker for each
+  // set of coordinates.
+  for (var i = 0; i < data.length; i++) {
+    var lat = data[i].latitude;
+    var long = data[i].longitude;
+    var latLng = new google.maps.LatLng(lat,long);
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map
+    });
+  }
+  };
       
 
-      // Loop through the results array and place a marker for each
-      // set of coordinates.
-        for (var i = 0; i < data.length; i++) {
-          var lat = data[i].latitude;
-          var long = data[i].longitude;
-          var latLng = new google.maps.LatLng(lat,long);
-          var marker = new google.maps.Marker({
-            position: latLng,
-            map: map
-          });
-        }
-      };
-      
-
-//Second Metric Doughnut/some circular thing
-  // num per call type
+//Calculating the data for the metrics below
 
 var callTime = {'Non Life-threatening':0, 'Potentially Life-Threatening':1 , 'Alarm':2 , 'Fire':3 }
 var callTimeAvg = [0,0,0,0]
 var dates = [];
+var zipCodes = [];
+var zipCodesMap = {};
 for(var i = 13; i < 25; i++){
   dates.push("1-"+i+"-18");
 }
@@ -56,14 +57,35 @@ for (var i = 0; i < data.length; i++) {
     var end = moment(date2);
     data[i].end = end;
 
-    var timeDiff = moment.utc(end.diff(start)).format("HH:mm:ss");
+    
+      var timeDiff = moment.duration(end.diff(start)).asMinutes();
+    
     data[i]["timeDiff"] = timeDiff;
+    //alert(timeDiff);
 
 
     var group = callTime[data[i].call_type_group];
     callTimeAvg[group] += 1;
+
+if(!(data[i].zipcode_of_incident in zipCodesMap)){
+    zipCodes.push(data[i].zipcode_of_incident);
+  }
+    zipCodesMap[data[i].zipcode_of_incident] = timeDiff;
 }
 
+/* Declare the function 'myFunc' */
+function getValue(map, list) {
+  var res = [];
+  for(var i = 0; i < list.length; i++){
+    res.push(map[list[i]]);
+  }
+
+  return res;
+}
+
+
+//Second Metric Doughnut/some circular thing
+  // num per call type
 
 
 new Chart(document.getElementById("radar-chart"), {
@@ -140,21 +162,19 @@ var options = {
 }
 const newchart = new Chart(ctx, options);
 
+//Which areas take the longest time to dispatch to on average
 
 var ctx = document.getElementById('myChart2').getContext('2d');
 var myChart = new Chart(ctx, {
   type: 'line',
   data: {
-    labels: ['M', 'T', 'W', 'T', 'F', 'S', 'S'],
+    labels: zipCodes.slice(0, 30),
     datasets: [{
-      label: 'apples',
-      data: [12, 19, 3, 17, 6, 3, 7],
+      label: 'timeDiff',
+      data: getValue(zipCodesMap,zipCodes.slice(0, 30)),
       backgroundColor: "rgba(153,255,51,0.4)"
-    }, {
-      label: 'oranges',
-      data: [2, 29, 5, 5, 2, 3, 10],
-      backgroundColor: "rgba(255,153,0,0.4)"
-    }]
+    }
+    ]
   }
 });
 

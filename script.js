@@ -15,4 +15,11 @@ $(document).ready(function() {
     }, 1000);
 	});
 
+	$('#disButton').click(function(){
+
+		$('html, body').animate({
+        scrollTop: $("#predictor").offset().top
+    }, 1000);
+	});
+
 });
