@@ -5,30 +5,29 @@
 	<title>SFFD Data Analysis</title>
 	<meta charset="utf-8"> 
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script>
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-		ga('create', 'UA-90294504-1', 'auto');
-		ga('send', 'pageview');
-		</script>
 	<!--font-->
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Raleway">
 	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Playfair+Display">
 	<!-- Latest compiled and minified CSS -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="
+	sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+	 <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-material-design/4.0.2/bootstrap-material-design.css" rel="stylesheet">
 	<!-- jQuery library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 	<!-- jQuery UI library -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 	<!-- Latest compiled JavaScript -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<!-- Chart.js -->
+	<script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.21.0/moment.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 	<!-- custom stylesheet -->
 	<link rel="stylesheet" type= "text/css" href="style.css">
 	<!-- javascript -->
 	<script type="text/javascript" src="script.js"></script>
-	<script type="text/javascript" src="metrics.js"></script>
+	<script type="text/javascript" src="predicter.js"></script>
+
+
 
 
 
@@ -37,6 +36,8 @@
 	
 </head>
 <body>
+	
+
 	<div class="side">
 		<a class = "vertical-text" id="about" href = "#aboutPG">about</a>
 	</div>
@@ -48,69 +49,92 @@
 	
 	<div class="jumbotron vertical-center" style = "margin-bottom: 5vh;">
 		
-			<div id= "stripe"><img src = "../images/stripe3.png" ></div>
 			<h2 style= "color: grey; font-size: 1.7em; font-weight: black: ;">San Francisco Fire Department</h2>
-			<h1 style= "color: lightgrey; font-size: 5em;;">Data Analysis</h1>
-			
+			<h1 style= "color: lightgrey; font-size: 5em;color:red;font-weight: bolder;">Data Analysis</h1>
+		3
 			
 			
 	</div>
 	
-	
-		<div class = "row" style = "padding:3vh; position:sticky;position:-webkit-sticky; top: 0; background-color:white;">
-			<div class = "col-sm-2"></div>
-			<div class = "col-sm-4" id="visButton"><a href = "#visualizations">metrics + trends</a></div>
-			<div class = "col-sm-4 underline"><a href = "experience.html">dispatch prediction</a></div>
-			<div class = "col-sm-2"></div>
-		</div>
+	<div class = "row" style = "padding:3vh; position:sticky;position:-webkit-sticky; top: 0; background-color:white; z-index: 2;">
+		<div class = "col-sm-2"></div>
+		<div class = "col-sm-4" id="visButton"><a href = "#visualizations">metrics + trends</a></div>
+		<div class = "col-sm-4 underline"><a href = "#predictor">dispatch prediction</a></div>
+		<div class = "col-sm-2"></div>
+	</div>
 
-	<div class="container-fluid bg-1 text-center" id = "visualizations">
-		<div class = "row" style = "margin:20vh">
-			<div class = "col-sm-6">
-				<h1>Map of Dispatches</h1>
+
+	<div class="container-fluid bg-1 text-center" id = "visualizations" style = "margin:15vh; padding-top:15vh; border-top: solid black thin">
+		<div class = "row">
+			<div class = "col-sm-4">
+				<h2>Map of Dispatches</h2>
 				<h3>1/13/18 - 1/24/18</h3>
 			</div>
-			<div class = "col-sm-6">
+			<div class = "col-sm-8" >
 				<div id="map"></div>
-				    <script>
-      var map;
-      function initMap() {
-        map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -34.397, lng: 150.644},
-          zoom: 8
-        });
-      }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBW51zaOHnvU871wIcSXmy51wJvmGVtYCs&callback=initMap"
-    async defer></script>
+    			
+	
 			</div>
 		</div>
 	</div>
 
 	<div class="container-fluid bg-1 text-center">
 		<div class = "row" style = "margin:20vh">
-			<div class = "col-sm-6">
-				<h1>Map of Dispatches</h1>
-				<h3>1/13/18 - 1/24/18</h3>
+
+			<div class = "col-sm-8"><canvas id="radar-chart"></canvas></div>
+			<div class = "col-sm-4">
+				<h2>Number of calls per call type</h2>
+				
 			</div>
-			<div class = "col-sm-6">something</div>
 		</div>
 	</div>
 
 	<div class="container-fluid bg-1 text-center">
 		<div class = "row" style = "margin:20vh">
-			<div class = "col-sm-6">
-				<h1>Map of Dispatches</h1>
-				<h3>1/13/18 - 1/24/18</h3>
+			<div class = "col-sm-4">
+				<h2>Number of calls received per day</h2>
+				
 			</div>
-			<div class = "col-sm-6">something</div>
+			<div class = "col-sm-8"><canvas id="chartCanvas"></canvas></div>
 		</div>
 	</div>
 
 
 
+
+	<!-- Third Container (Grid) (price estimator and revenue predictor)-->
+	<div class="container-fluid bg-3 text-center" id="predictor" style="margin-left:50vh;margin-right:50vh;border-top: solid thin black;padding-top: 20vh;">    
+	    <div class="col-sm-12" >
+	      <h3 class="margin">Dispatch Predictor</h3><br>
+	      <p>Enter the latitude and longitude of a property to estimate the dispatch unit. 
+	        (Note: please give valid coordinates for a property in San Francisco for valid results.)</p>
+	      <div class="form-group text-center">
+	      	<label for="usr">Enter time:</label>
+	        <input type="text" class="form-control" id="time" style = "width:100%;">
+	        <label for="usr">Enter latitude:</label>
+	        <input type="text" class="form-control" id="lat" style = "width:100%;">
+	        <label for="usr">Enter longitude:</label>
+	        <input type="text" class="form-control" id="long" style = "width:100%;">
+	        <button type="button" class="btn" onclick="predict()" style = "margin-top: 5vh"> Compute</button>
+	        <h2 id= "predResult"></h2>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+	<div class="container-fluid bg-1 text-center">
+		<div class = "row" style = "margin:20vh">
+			<div class = "col-sm-2">
+				<h1>Map of Dispatches</h1>
+				<h3></h3>
+			</div>
+			<div class = "col-sm-10"><canvas id="myChart2"></canvas></div>
+		</div>
+	</div>
+
 	
-	
+
+
 	<div id="aboutPG">
 	<h2>Hello,</h2>
 	<p>
@@ -125,9 +149,6 @@
 	<p>
 	-
 	</p>
-	<p>
-	Let’s get in touch if you have any opportunities or cool projects!
-	</p>
 	<div>
 	<h3>Candia Gu</h3>
 	Candia.D.Gu@gmail.com
@@ -141,6 +162,11 @@
 				<div class = "col-sm-2"></div>
 			</div>
 	</div>
+
+	<script type="text/javascript" src="data.js"></script>
+	<script type="text/javascript" src="metrics.js"></script>
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCGEBVPLC5x39vJPHIbgW4lnKOrsy_G35M&callback=initMap"
+    			async defer></script>
 </body>
 
 
