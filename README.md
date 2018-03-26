@@ -8,3 +8,6 @@ For the first task the I looked at the general locations of the calls to the dep
 
 
 For the last two tasks, I coded up a dispatch predictor that would predict the type of dispatch unit based on the time, latitude and longitude, to do this, I simply looked at all the data that existed before and found the most called for unit in the past to predict the future unit. For the time it takes to dispatch vs the area, I drew a line plot of the corresponding zip codes, but now that I think about it I should've used a map. At the zip code 94134, the time it takes to dispatch is much higher than all the other zip codes, so I would put a new station there.
+
+
+To see the live site, go here: https://candiagu.github.io/CapitalOneChallenge/
